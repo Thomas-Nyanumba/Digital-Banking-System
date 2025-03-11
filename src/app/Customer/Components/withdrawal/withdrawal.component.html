@@ -1,0 +1,44 @@
+<div class="container">
+    <h2>Withdraw Money</h2>
+  
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  
+    <form [formGroup]="withdrawalForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="account">Select Account</label>
+        <select formControlName="account" id="account">
+          <option value="">-- Select Account --</option>
+          <option *ngFor="let account of accounts" [value]="account.id">
+            {{ account.accountNumber }} - {{ account.accountType }} (Balance: {{ account.balance | currency }})
+          </option>
+        </select>
+        <div *ngIf="withdrawalForm.get('account')?.touched && withdrawalForm.get('account')?.errors?.['required']" class="error">
+          Please select an account.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="amount">Withdrawal Amount</label>
+        <input type="number" id="amount" formControlName="amount" placeholder="Enter amount to withdraw" />
+        <div *ngIf="withdrawalForm.get('amount')?.touched && withdrawalForm.get('amount')?.errors?.['required']" class="error">
+          Amount is required.
+        </div>
+        <div *ngIf="withdrawalForm.get('amount')?.touched && withdrawalForm.get('amount')?.errors?.['min']" class="error">
+          Minimum withdrawal amount is 1.
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="description">Description (optional)</label>
+        <input type="text" id="description" formControlName="description" placeholder="e.g., ATM Withdrawal" />
+      </div>
+  
+      <button type="submit" [disabled]="withdrawalForm.invalid">Submit Withdrawal</button>
+    </form>
+  </div>
+  

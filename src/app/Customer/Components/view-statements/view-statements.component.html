@@ -1,0 +1,38 @@
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Mini Statement - Account ID: {{ accountId }}</h2>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger text-center">
+      {{ errorMessage }}
+    </div>
+  
+    <div class="table-responsive" *ngIf="transactions.length > 0; else noData">
+      <table class="table table-striped table-bordered table-hover mini-statement-table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Description</th>
+            <th scope="col">Type</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let txn of transactions">
+            <td>{{ txn.date }}</td>
+            <td>{{ txn.description }}</td>
+            <td [ngClass]="{'text-success': txn.type === 'credit', 'text-danger': txn.type === 'debit'}">
+              {{ txn.type | titlecase }}
+            </td>
+            <td>{{ txn.amount | currency: 'USD' }}</td>
+            <td>{{ txn.balance | currency: 'USD' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <ng-template #noData>
+      <div class="alert alert-info text-center">
+        No transactions found for this account.
+      </div>
+    </ng-template>
+  </div>

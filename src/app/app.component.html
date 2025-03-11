@@ -1,5 +1,6 @@
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white">
+
+  <nav *ngIf="!isLoginPage" class="navbar navbar-expand-lg navbar-light bg-white">
     <div class="container-fluid">
         <div class="d-flex align-items-center">
             <span class="toggle-sidebar me-3">
@@ -31,38 +32,39 @@
             </div>
         </div>
     
-</nav>
+
+      </nav>
 
 <!-- Sidebar -->
-<div class="sidebar">
+<div  *ngIf="!isLoginPage" class="sidebar">
     <a href="#" class="sidebar-item">
         <i class="fas fa-tachometer-alt"></i>
         <span>Dashboard</span>
     </a>
     
-    <a href="#" class="sidebar-item has-submenu">
+    <a  class="sidebar-item has-submenu">
       <i class="fas fa-users"></i>
         <span>Customers Module </span>
         <i class="fas fa-chevron-down float-end submenu-toggle"></i>
     </a>
     <div class="submenu">
-      <a href="#" class="sidebar-item ">
+      <a href="/view-accounts" class="sidebar-item ">
         <i class="fas fa-eye"></i>
           <span> View Accounts </span>          
       </a>
-      <a href="#" class="sidebar-item ">
+      <a href="/view-statements" class="sidebar-item ">
         <i class="fas fa-eye"></i>
           <span> View Statements </span>          
       </a>
-      <a href="#" class="sidebar-item ">
+      <a href="/deposits" class="sidebar-item ">
         <i class="fas fa-money-bill-transfer"></i>
           <span> Deposit </span>          
       </a>
-      <a href="#" class="sidebar-item ">
+      <a href="/withdrawal" class="sidebar-item ">
         <i class="fas fa-hand-holding-dollar"></i>
           <span> Withdraw </span>          
       </a>
-      <a href="#" class="sidebar-item ">
+      <a href="/transferfunds" class="sidebar-item ">
         <i class="fas fa-credit-card"></i>
           <span> Fund Transfer </span>          
       </a>

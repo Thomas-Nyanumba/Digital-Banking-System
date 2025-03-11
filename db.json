@@ -1,0 +1,225 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "username": "john_doe",
+        "password": "123456",
+        "email": "john@example.com",
+        "role": "customer"
+      },
+      {
+        "id": 2,
+        "username": "jane_smith",
+        "password": "abcdef",
+        "email": "jane@example.com",
+        "role": "customer"
+      }
+    ],
+    "accounts": [
+      {
+        "id": 1,
+        "customerId": 1,
+        "accountNumber": "ACC001",
+        "accountType": "Savings",
+        "balance": 4500
+      },
+      {
+        "id": 2,
+        "customerId": 1,
+        "accountNumber": "ACC002",
+        "accountType": "Checking",
+        "balance": 2250
+      },
+      {
+        "id": 3,
+        "customerId": 2,
+        "accountNumber": "ACC003",
+        "accountType": "Savings",
+        "balance": 12000
+      }
+    ],
+    "transactions": [
+      {
+        "id": 1,
+        "accountId": 1,
+        "date": "2025-03-10T10:00:00Z",
+        "description": "ATM Withdrawal",
+        "type": "withdrawal",
+        "amount": 500
+      },
+      {
+        "id": 2,
+        "accountId": 1,
+        "date": "2025-03-08T12:00:00Z",
+        "description": "Salary Deposit",
+        "type": "deposit",
+        "amount": 2000
+      },
+      {
+        "id": 3,
+        "accountId": 1,
+        "date": "2025-03-05T09:00:00Z",
+        "description": "Utility Bill Payment",
+        "type": "withdrawal",
+        "amount": 300
+      },
+      {
+        "id": 4,
+        "accountId": 2,
+        "date": "2025-03-09T15:30:00Z",
+        "description": "POS Purchase - Supermarket",
+        "type": "withdrawal",
+        "amount": 750
+      },
+      {
+        "id": 5,
+        "accountId": 2,
+        "date": "2025-03-06T14:45:00Z",
+        "description": "Mobile Money Deposit",
+        "type": "deposit",
+        "amount": 1000
+      },
+      {
+        "id": "afe6",
+        "accountId": 1,
+        "type": "deposit",
+        "amount": 4000,
+        "description": "Self deposit",
+        "date": "2025-03-11T08:19:36.705Z"
+      },
+      {
+        "id": "02cd",
+        "accountId": 1,
+        "date": "2025-03-11",
+        "description": "ATM Withdrawal",
+        "type": "debit",
+        "amount": 2000,
+        "balance": 2500
+      },
+      {
+        "id": "16a5",
+        "accountId": 3,
+        "date": "2025-03-11",
+        "description": "Cash Withdrawal",
+        "type": "debit",
+        "amount": 500,
+        "balance": 11500
+      },
+      {
+        "id": "1530",
+        "accountId": 3,
+        "date": "2025-03-11",
+        "description": "ATM Withdrawal",
+        "type": "debit",
+        "amount": 500,
+        "balance": 11500
+      },
+      {
+        "id": "abc0",
+        "accountId": 3,
+        "date": "2025-03-11",
+        "description": "ATM Withdrawal",
+        "type": "debit",
+        "amount": 400,
+        "balance": 11600
+      },
+      {
+        "id": "42d4",
+        "accountId": 1,
+        "date": "2025-03-11",
+        "description": "ATM Withdrawal",
+        "type": "debit",
+        "amount": 500,
+        "balance": 4000
+      },
+      {
+        "id": "531c",
+        "fromAccountId": 3,
+        "toAccountId": 2,
+        "amount": 400,
+        "description": "Gift"
+      },
+      {
+        "id": "916a",
+        "accountId": 1,
+        "type": "deposit",
+        "amount": 600,
+        "description": "Self deposit",
+        "date": "2025-03-11T09:23:03.605Z"
+      },
+      {
+        "id": "d868",
+        "accountId": 3,
+        "date": "2025-03-11",
+        "description": "ATM Withdrawal",
+        "type": "debit",
+        "amount": 500,
+        "balance": 11500
+      },
+      {
+        "id": "63e4",
+        "accountId": 3,
+        "date": "2025-03-11",
+        "description": "ATM Withdrawal",
+        "type": "debit",
+        "amount": 500,
+        "balance": 11500
+      },
+      {
+        "id": "d08e",
+        "fromAccountId": 3,
+        "toAccountId": 2,
+        "amount": 750,
+        "description": "Gifting"
+      },
+      {
+        "id": "80c3",
+        "accountId": 1,
+        "type": "deposit",
+        "amount": 400,
+        "description": "Self deposit",
+        "date": "2025-03-11T09:50:27.016Z"
+      },
+      {
+        "id": "c644",
+        "accountId": 1,
+        "date": "2025-03-11",
+        "description": "Cash Withdrawal",
+        "type": "debit",
+        "amount": 400,
+        "balance": 4100
+      },
+      {
+        "id": "5d00",
+        "fromAccountId": 2,
+        "toAccountId": 1,
+        "amount": 200,
+        "description": "Gifting"
+      },
+      {
+        "id": "3a5a",
+        "accountId": 3,
+        "date": "2025-03-11",
+        "description": "Cash Withdrawal",
+        "type": "debit",
+        "amount": 490,
+        "balance": 11510
+      },
+      {
+        "id": "d92a",
+        "accountId": 2,
+        "date": "2025-03-11",
+        "description": "Cash Withdrawal",
+        "type": "debit",
+        "amount": 490,
+        "balance": 1760
+      },
+      {
+        "id": "ab1e",
+        "fromAccountId": 3,
+        "toAccountId": 1,
+        "amount": 200,
+        "description": "Gift"
+      }
+    ]
+  }

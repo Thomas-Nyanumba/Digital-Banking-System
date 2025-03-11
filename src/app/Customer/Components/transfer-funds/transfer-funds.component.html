@@ -1,0 +1,63 @@
+<div class="transfer-funds-container">
+
+    <h2>Transfer Funds</h2>
+  
+    <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+  
+      <!-- From Account -->
+      <div class="form-group">
+        <label for="fromAccount">From Account</label>
+        <select id="fromAccount" formControlName="fromAccount">
+          <option value="" disabled selected>Select Account</option>
+          <option *ngFor="let account of accounts" [value]="account.id">
+            {{ account.accountNumber }} - {{ account.accountType }} (Balance: ${{ account.balance.toFixed(2) }})
+          </option>
+        </select>
+        <div *ngIf="transferForm.get('fromAccount')?.touched && transferForm.get('fromAccount')?.invalid" class="error">
+          From Account is required.
+        </div>
+      </div>
+  
+      <!-- To Account -->
+      <div class="form-group">
+        <label for="toAccount">To Account</label>
+        <select id="toAccount" formControlName="toAccount">
+          <option value="" disabled selected>Select Account</option>
+          <option *ngFor="let account of accounts" [value]="account.id">
+            {{ account.accountNumber }} - {{ account.accountType }} (Balance: ${{ account.balance.toFixed(2) }})
+          </option>
+        </select>
+        <div *ngIf="transferForm.get('toAccount')?.touched && transferForm.get('toAccount')?.invalid" class="error">
+          To Account is required.
+        </div>
+      </div>
+  
+      <!-- Amount -->
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" formControlName="amount" placeholder="Enter amount to transfer">
+        <div *ngIf="transferForm.get('amount')?.touched && transferForm.get('amount')?.invalid" class="error">
+          A valid amount is required (min $1).
+        </div>
+      </div>
+  
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description">Description (optional)</label>
+        <input type="text" id="description" formControlName="description" placeholder="Add a description">
+      </div>
+  
+      <button type="submit" [disabled]="transferForm.invalid">Transfer</button>
+  
+    </form>
+  
+    <!-- Success & Error Messages -->
+    <div *ngIf="successMessage" class="success">
+      {{ successMessage }}
+    </div>
+    <div *ngIf="errorMessage" class="error">
+      {{ errorMessage }}
+    </div>
+  
+  </div>
+  
