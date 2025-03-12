@@ -34,7 +34,7 @@ export class ViewAccountsComponent implements OnInit {
   }
 
   getAccounts(): void {
-    const url = `http://localhost:3001/accounts?customerId=${this.customerId}`;
+    const url = `http://localhost:3001/accounts?UserId=${this.customerId}`;
     this.http.get<any[]>(url).subscribe(
       (data) => {
         this.accounts = data;

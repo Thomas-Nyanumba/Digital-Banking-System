@@ -1,34 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
-// Optional: Define interfaces for strong typing
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-}
-
-export interface Account {
-  id: number;
-  customerId: number;
-  accountNumber: string;
-  accountType: string;
-  balance: number;
-}
-
-export interface Transaction {
-  id: number;
-  accountId?: number;
-  fromAccountId?: number;
-  toAccountId?: number;
-  date: string;
-  description: string;
-  type?: string; // deposit | withdrawal
-  amount: number;
-  balance?: number;
-}
+// Interfaces (Already Present)
+export interface User { /* ... */ }
+export interface Account { /* ... */ }
+export interface Transaction { /* ... */ }
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +13,10 @@ export interface Transaction {
 export class CustomerService {
 
   private apiUrl = 'http://localhost:3001'; // json-server endpoint
+
+  // 🔔 BehaviorSubject to notify components of transaction updates
+  private transactionUpdatedSource = new BehaviorSubject<void>(undefined);
+  transactionUpdated$ = this.transactionUpdatedSource.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -59,12 +40,16 @@ export class CustomerService {
     return this.http.get<Transaction[]>(`${this.apiUrl}/transactions?fromAccountId=${accountId}&toAccountId=${accountId}`);
   }
 
-  // ✅ Get all transactions involving an account (standard + transfers)
+  // ✅ Get all transactions (can be merged later in the component)
   getAllAccountActivity(accountId: number): Observable<Transaction[]> {
-    // You can handle merging the results in a component/service if needed
     const transactions$ = this.getTransactionsByAccountId(accountId);
     const transfers$ = this.getTransfersByAccountId(accountId);
-    // Merge logic can be added in the component layer if required
-    return transactions$; // Or combineLatest if you want to merge in the service
+    return transactions$;
+  }
+
+  // ✅ 🔔 Notify when a transaction is updated
+  notifyTransactionUpdate(): void {
+    console.log('Transaction update notification sent');
+    this.transactionUpdatedSource.next();
   }
 }

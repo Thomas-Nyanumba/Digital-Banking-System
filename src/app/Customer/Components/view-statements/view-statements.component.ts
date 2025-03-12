@@ -19,14 +19,18 @@ export class ViewStatementsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // Get the account ID from query param or route param if passed
     this.route.params.subscribe(params => {
-      this.accountId = +params['id'] || 1; // Default to account ID 1 if not provided
-
+      this.accountId = +params['id'] || 1;
+      this.loadTransactions();
+    });
+  
+    // 👂 Listen for transaction updates
+    this.customerService.transactionUpdated$.subscribe(() => {
+      console.log('Received transaction update event');
       this.loadTransactions();
     });
   }
-
+  
   loadTransactions(): void {
     this.customerService.getTransactionsByAccountId(this.accountId)
       .subscribe({
