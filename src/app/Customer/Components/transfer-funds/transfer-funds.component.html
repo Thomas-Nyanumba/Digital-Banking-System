@@ -8,11 +8,12 @@
       <div class="form-group">
         <label for="fromAccount">From Account</label>
         <select id="fromAccount" formControlName="fromAccount">
-          <option value="" disabled selected>Select Account</option>
-          <option *ngFor="let account of accounts" [value]="account.id">
-            {{ account.accountNumber }} - {{ account.accountType }} (Balance: ${{ account.balance.toFixed(2) }})
+          <option [ngValue]="null" disabled selected>Select Account</option>
+          <option *ngFor="let account of accounts" [ngValue]="account.id">
+            Account #{{ account.id }} - {{ account.accountType }} (Balance: ${{ account.balance.toFixed(2) }})
           </option>
         </select>
+        
         <div *ngIf="transferForm.get('fromAccount')?.touched && transferForm.get('fromAccount')?.invalid" class="error">
           From Account is required.
         </div>
@@ -22,11 +23,12 @@
       <div class="form-group">
         <label for="toAccount">To Account</label>
         <select id="toAccount" formControlName="toAccount">
-          <option value="" disabled selected>Select Account</option>
-          <option *ngFor="let account of accounts" [value]="account.id">
-            {{ account.accountNumber }} - {{ account.accountType }} (Balance: ${{ account.balance.toFixed(2) }})
+          <option [ngValue]="null" disabled selected>Select Account</option>
+          <option *ngFor="let account of accounts" [ngValue]="account.id">
+            Account #{{ account.id }} - {{ account.accountType }} (Balance: ${{ account.balance.toFixed(2) }})
           </option>
         </select>
+        
         <div *ngIf="transferForm.get('toAccount')?.touched && transferForm.get('toAccount')?.invalid" class="error">
           To Account is required.
         </div>

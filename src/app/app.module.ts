@@ -9,10 +9,11 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './Auth/Components/login/login.component';
 import { ViewAccountsComponent } from './Customer/Components/view-accounts/view-accounts.component';
 import { ViewStatementsComponent } from './Customer/Components/view-statements/view-statements.component';
-import { DepositComponent } from './Customer/Components/deposits/deposits.component';
-import { WithdrawalComponent } from './Customer/Components/withdrawal/withdrawal.component';
+import { DepositsComponent } from './Customer/Components/deposits/deposits.component';
+import { WithdrawalsComponent } from './Customer/Components/withdrawal/withdrawal.component';
 import { TransferFundsComponent } from './Customer/Components/transfer-funds/transfer-funds.component';
 import { DashboardComponent } from './Customer/Components/dashboard/dashboard.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -20,10 +21,10 @@ import { DashboardComponent } from './Customer/Components/dashboard/dashboard.co
     LoginComponent,
     ViewAccountsComponent,
     ViewStatementsComponent,
-    DepositComponent,
-    WithdrawalComponent,
     TransferFundsComponent,
-    DashboardComponent
+    DashboardComponent,
+    DepositsComponent,
+    WithdrawalsComponent
     
     
   ],
@@ -32,7 +33,8 @@ import { DashboardComponent } from './Customer/Components/dashboard/dashboard.co
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule, 
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

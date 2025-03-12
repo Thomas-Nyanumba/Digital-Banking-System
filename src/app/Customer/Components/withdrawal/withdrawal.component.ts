@@ -1,109 +1,130 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AccountService } from '../../Services/account.service';
+import { AuthService } from 'src/app/Auth/Services/auth.service';
+import { Account } from '../../Models/account.model';
 
 @Component({
-  selector: 'app-withdrawal',
+  selector: 'app-withdrawals',
   templateUrl: './withdrawal.component.html',
   styleUrls: ['./withdrawal.component.css']
 })
-export class WithdrawalComponent implements OnInit {
+export class WithdrawalsComponent implements OnInit {
+
   withdrawalForm!: FormGroup;
-  accounts: any[] = [];
-  successMessage: string = '';
-  errorMessage: string = '';
+  loggedInCustomerId!: number;
+  userAccounts: Account[] = [];
+  selectedAccount!: Account;
+
+  successMessage = '';
+  errorMessage = '';
+  isSubmitting = false;
+  message: string | undefined;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private accountService: AccountService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
-    this.loadAccounts();
-  }
+    const customerId = this.authService.getLoggedInCustomerId();
+  
+    if (!customerId) {
+      this.errorMessage = 'User not logged in or no customer ID found.';
+      console.error('No customerId found in authService!');
+      return;
+    }
+  
+    this.loggedInCustomerId = customerId;
 
-  createForm() {
     this.withdrawalForm = this.fb.group({
-      account: ['', Validators.required],
+      accountId: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       description: ['']
     });
+  
+    this.loadUserAccounts();
   }
 
-  loadAccounts() {
-    this.http.get<any[]>('http://localhost:3001/accounts').subscribe({
-      next: (data) => {
-        this.accounts = data;
+  /**
+   * Fetch user accounts based on logged-in customerId
+   */
+  loadUserAccounts(): void {
+    if (!this.loggedInCustomerId) {
+      console.error('No customer ID available to fetch accounts.');
+      this.errorMessage = 'Unable to fetch accounts: no customer ID.';
+      return;
+    }
+  
+    this.accountService.getAccountsByUserId(this.loggedInCustomerId).subscribe({
+      next: (accounts: Account[]) => {
+        this.userAccounts = accounts;
+
+        console.log("User accounts: ", this.userAccounts);
+  
+        if (!accounts || accounts.length === 0) {
+          this.errorMessage = 'No accounts found for this customer.';
+          console.warn('No accounts returned from server.');
+        } else {
+          this.errorMessage = '';
+          console.log(`Loaded ${accounts.length} accounts for user ID ${this.loggedInCustomerId}`);
+        }
       },
       error: (err) => {
-        console.error('Error fetching accounts:', err);
-        this.errorMessage = 'Unable to load accounts. Please try again later.';
+        console.error('Failed to load customer accounts:', err);
+        this.errorMessage = 'An error occurred while fetching accounts.';
       }
     });
   }
 
-  onSubmit() {
+  /**
+   * Handles withdrawal form submission
+   */
+  onWithdraw(): void {
     if (this.withdrawalForm.invalid) {
+      console.log('Form is invalid');
       return;
     }
 
-    const formData = this.withdrawalForm.value;
-    const accountId = formData.account;
+    this.isSubmitting = true;
 
-    const selectedAccount = this.accounts.find(acc => acc.id === parseInt(accountId, 10));
+    const accountId = this.withdrawalForm.value.accountId;
+    const withdrawalAmount = this.withdrawalForm.value.amount;
+
+    const selectedAccount = this.userAccounts.find(acc => acc.id === accountId);
 
     if (!selectedAccount) {
       this.errorMessage = 'Selected account not found.';
+      this.isSubmitting = false;
       return;
     }
 
-    if (selectedAccount.balance < formData.amount) {
-      this.errorMessage = 'Insufficient funds for this withdrawal.';
+    if (withdrawalAmount > selectedAccount.balance) {
+      this.errorMessage = 'Withdrawal amount exceeds account balance.';
+      this.isSubmitting = false;
       return;
     }
 
-    const newBalance = selectedAccount.balance - formData.amount;
+    const newBalance = selectedAccount.balance - withdrawalAmount;
 
-    const transaction = {
-      accountId: selectedAccount.id,
-      date: new Date().toISOString().split('T')[0],
-      description: formData.description || 'Cash Withdrawal',
-      type: 'debit',
-      amount: formData.amount,
-      balance: newBalance
-    };
+    this.accountService.withdrawFromAccount(accountId, newBalance).subscribe({
+      next: (updatedAccount: Account) => {
+        this.isSubmitting = false;
+        this.message = 'Withdrawal successful!';
+        this.errorMessage = '';
 
-    // Post the new transaction
-    this.http.post('http://localhost:3001/transactions', transaction).subscribe({
-      next: () => {
-        // Update the account balance
-        this.http.put(`http://localhost:3001/accounts/${selectedAccount.id}`, {
-          ...selectedAccount,
-          balance: newBalance
-        }).subscribe({
-          next: () => {
-            this.successMessage = 'Withdrawal successful!';
-            this.errorMessage = '';
-            this.withdrawalForm.reset();
-            this.loadAccounts();
-          },
-          error: (error) => {
-            this.errorMessage = 'Failed to update account balance.';
-            console.log(error)
-            this.successMessage = '';
-          }
-        });
-        
+        // Update local account balance
+        selectedAccount.balance = updatedAccount.balance;
+
+        // Reset form
+        this.withdrawalForm.reset();
       },
-      error: () => {
-        this.errorMessage = 'Failed to process withdrawal transaction.';
-        this.successMessage = '';
+      error: (err: any) => {
+        console.error('Withdrawal failed:', err);
+        this.isSubmitting = false;
+        this.errorMessage = 'Withdrawal failed. Try again later.';
       }
     });
-  }
-
-  hasError(controlName: string, errorName: string): boolean {
-    return this.withdrawalForm.get(controlName)?.hasError(errorName) ?? false;
   }
 }

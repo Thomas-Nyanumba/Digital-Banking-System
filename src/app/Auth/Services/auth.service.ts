@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
+  [x: string]: any;
   private loggedIn = false;
 
   constructor() { }
@@ -36,12 +37,13 @@ export class AuthService {
 
   // ✅ New method to get the logged-in customer's ID
   getLoggedInCustomerId(): number | null {
-    const id = localStorage.getItem('customerId');
-    return id ? Number(id) : null;
+    const UserId = localStorage.getItem('customerId');
+    return UserId ? Number(UserId) : null;
   }
 
   // ✅ Optional method to get the username
   getLoggedInUsername(): string | null {
     return localStorage.getItem('username');
   }
+  
 }

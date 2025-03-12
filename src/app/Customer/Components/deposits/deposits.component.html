@@ -1,47 +1,68 @@
-<div class="container">
-    <h2>Deposit Funds</h2>
-  
-    <form [formGroup]="depositForm" (ngSubmit)="onDeposit()" novalidate>
-      <div class="form-group">
-        <label for="amount">Amount</label>
-        <input
-          type="number"
-          id="amount"
-          formControlName="amount"
-          placeholder="Enter amount"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': depositForm.get('amount')?.invalid && depositForm.get('amount')?.touched }"
-        />
-        <div class="invalid-feedback" *ngIf="depositForm.get('amount')?.errors?.['required'] && depositForm.get('amount')?.touched">
-          Amount is required.
-        </div>
-        <div class="invalid-feedback" *ngIf="depositForm.get('amount')?.errors?.['min'] && depositForm.get('amount')?.touched">
-          Minimum deposit is 1.
-        </div> 
-      </div>
-  
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          formControlName="description"
-          class="form-control"
-          rows="3"
-          placeholder="Enter description (optional)"
-        ></textarea>
-      </div>
-  
-      <button type="submit" class="btn btn-primary btn-block" [disabled]="isSubmitting">
-        {{ isSubmitting ? 'Processing...' : 'Deposit' }}
-      </button>
-    </form>
-  
-    <div class="alert alert-success" *ngIf="message">
-      {{ message }}
-    </div>
-  
-    <div class="alert alert-danger" *ngIf="errorMessage">
-      {{ errorMessage }}
-    </div>
+<div class="container mt-4">
+  <h2 class="mb-4">Deposit Funds</h2>
+
+  <!-- Success Message -->
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
   </div>
-  
+
+  <!-- Error Message -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Deposit Form -->
+  <form [formGroup]="depositForm" (ngSubmit)="onDeposit()" novalidate>
+    
+    <!-- Account Selection -->
+    <div class="form-group mb-3">
+      <label for="accountId">Select Account</label>
+      <select
+        id="accountId"
+        formControlName="accountId"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': depositForm.get('accountId')?.invalid && depositForm.get('accountId')?.touched
+        }"
+      >
+        <option value="">-- Select an Account --</option>
+        <option *ngFor="let account of userAccounts" [value]="account.id">
+          Account #{{ account.id }} (Balance: {{ account.balance | currency }})
+        </option>
+      </select>
+      <div class="invalid-feedback" *ngIf="depositForm.get('accountId')?.errors?.['required'] && depositForm.get('accountId')?.touched">
+        Account selection is required.
+      </div>
+    </div>
+
+    <!-- Amount Input -->
+    <div class="form-group mb-3">
+      <label for="amount">Amount</label>
+      <input
+        type="number"
+        id="amount"
+        formControlName="amount"
+        placeholder="Enter amount"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': depositForm.get('amount')?.invalid && depositForm.get('amount')?.touched
+        }"
+      />
+      <div class="invalid-feedback" *ngIf="depositForm.get('amount')?.errors?.['required'] && depositForm.get('amount')?.touched">
+        Amount is required.
+      </div>
+      <div class="invalid-feedback" *ngIf="depositForm.get('amount')?.errors?.['min'] && depositForm.get('amount')?.touched">
+        Minimum deposit is 1.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="btn btn-primary btn-block w-100"
+      [disabled]="depositForm.invalid || isSubmitting"
+    >
+      {{ isSubmitting ? 'Processing...' : 'Deposit Funds' }}
+    </button>
+  </form>
+</div>

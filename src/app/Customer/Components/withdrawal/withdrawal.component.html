@@ -1,44 +1,68 @@
-<div class="container">
-    <h2>Withdraw Money</h2>
-  
-    <div *ngIf="successMessage" class="success-message">
-      {{ successMessage }}
-    </div>
-    <div *ngIf="errorMessage" class="error-message">
-      {{ errorMessage }}
-    </div>
-  
-    <form [formGroup]="withdrawalForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="account">Select Account</label>
-        <select formControlName="account" id="account">
-          <option value="">-- Select Account --</option>
-          <option *ngFor="let account of accounts" [value]="account.id">
-            {{ account.accountNumber }} - {{ account.accountType }} (Balance: {{ account.balance | currency }})
-          </option>
-        </select>
-        <div *ngIf="withdrawalForm.get('account')?.touched && withdrawalForm.get('account')?.errors?.['required']" class="error">
-          Please select an account.
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="amount">Withdrawal Amount</label>
-        <input type="number" id="amount" formControlName="amount" placeholder="Enter amount to withdraw" />
-        <div *ngIf="withdrawalForm.get('amount')?.touched && withdrawalForm.get('amount')?.errors?.['required']" class="error">
-          Amount is required.
-        </div>
-        <div *ngIf="withdrawalForm.get('amount')?.touched && withdrawalForm.get('amount')?.errors?.['min']" class="error">
-          Minimum withdrawal amount is 1.
-        </div>
-      </div>
-  
-      <div class="form-group">
-        <label for="description">Description (optional)</label>
-        <input type="text" id="description" formControlName="description" placeholder="e.g., ATM Withdrawal" />
-      </div>
-  
-      <button type="submit" [disabled]="withdrawalForm.invalid">Submit Withdrawal</button>
-    </form>
+<div class="container mt-4">
+  <h2 class="mb-4">Withdraw Funds</h2>
+
+  <!-- Success Message -->
+  <div class="alert alert-success" *ngIf="successMessage">
+    {{ successMessage }}
   </div>
-  
+
+  <!-- Error Message -->
+  <div class="alert alert-danger" *ngIf="errorMessage">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Withdrawal Form -->
+  <form [formGroup]="withdrawalForm" (ngSubmit)="onWithdraw()" novalidate>
+
+    <!-- Account Selection -->
+    <div class="form-group mb-3">
+      <label for="accountId">Select Account</label>
+      <select
+        id="accountId"
+        formControlName="accountId"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': withdrawalForm.get('accountId')?.invalid && withdrawalForm.get('accountId')?.touched
+        }"
+      >
+        <option value="">-- Select an Account --</option>
+        <option *ngFor="let account of userAccounts" [value]="account.id">
+          Account #{{ account.id }} (Balance: {{ account.balance | currency }})
+        </option>
+      </select>
+      <div class="invalid-feedback" *ngIf="withdrawalForm.get('accountId')?.errors?.['required'] && withdrawalForm.get('accountId')?.touched">
+        Account selection is required.
+      </div>
+    </div>
+
+    <!-- Amount Input -->
+    <div class="form-group mb-3">
+      <label for="amount">Amount</label>
+      <input
+        type="number"
+        id="amount"
+        formControlName="amount"
+        placeholder="Enter amount"
+        class="form-control"
+        [ngClass]="{
+          'is-invalid': withdrawalForm.get('amount')?.invalid && withdrawalForm.get('amount')?.touched
+        }"
+      />
+      <div class="invalid-feedback" *ngIf="withdrawalForm.get('amount')?.errors?.['required'] && withdrawalForm.get('amount')?.touched">
+        Amount is required.
+      </div>
+      <div class="invalid-feedback" *ngIf="withdrawalForm.get('amount')?.errors?.['min'] && withdrawalForm.get('amount')?.touched">
+        Minimum withdrawal is 1.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="btn btn-danger btn-block w-100"
+      [disabled]="withdrawalForm.invalid || isSubmitting"
+    >
+      {{ isSubmitting ? 'Processing...' : 'Withdraw Funds' }}
+    </button>
+  </form>
+</div>
