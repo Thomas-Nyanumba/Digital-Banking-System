@@ -15,7 +15,6 @@ export class WithdrawalsComponent implements OnInit {
   loggedInCustomerId!: number;
   userAccounts: Account[] = [];
   selectedAccount!: Account;
-
   successMessage = '';
   errorMessage = '';
   isSubmitting = false;

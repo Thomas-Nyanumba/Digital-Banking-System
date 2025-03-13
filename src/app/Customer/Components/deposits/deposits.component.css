@@ -1,92 +1,140 @@
+/* Container Styles */
 .container {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 90%; /* Makes it responsive on smaller screens */
+  margin: 40px auto;
+  padding: 60px 20px 20px 20px; /* Reduced top padding for better mobile spacing */
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading Styles */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 1.8rem; /* Responsive font size */
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Labels */
+label {
+  font-weight: 500;
+  color: #555;
+  font-size: 1rem;
+}
+
+/* Inputs, Selects, Textareas */
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+/* Buttons */
+button.btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-primary {
+  background-color: lightseagreen;
+  border: none;
+  color: #fff;
+}
+
+button.btn-primary:hover {
+  background-color: #007b8a; /* Darker sea green on hover */
+}
+
+button[disabled] {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Validation Errors */
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Alerts */
+.alert {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 5px;
+  font-size: 0.95rem;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 15px;
+    box-shadow: none; /* Optional: Remove shadows for cleaner mobile look */
   }
-  
+
   h2 {
-    text-align: center;
-    margin-bottom: 25px;
-    color: #333;
+    font-size: 1.5rem;
   }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
+
   label {
-    font-weight: 500;
-    color: #555;
+    font-size: 0.9rem;
   }
-  
-  .form-control {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-  
-  .form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
-    outline: none;
-  }
-  
-  textarea.form-control {
-    resize: vertical;
-  }
-  
+
   button.btn {
-    width: 100%;
+    font-size: 1rem;
     padding: 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    cursor: pointer;
   }
-  
-  button.btn-primary {
-    background-color: lightseagreen;
-    border: none;
-  }
-  
-  button.btn-primary:hover {
-    background-color: #0056b3;
-  }
-  
-  button[disabled] {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-  
-  .invalid-feedback {
-    color: #dc3545;
-    font-size: 12px;
-    margin-top: 5px;
-  }
-  
+
   .alert {
-    margin-top: 20px;
-    padding: 12px;
-    border-radius: 5px;
+    font-size: 0.9rem;
   }
-  
-  .alert-success {
-    background-color: #d4edda;
-    color: #155724;
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 20px 15px;
   }
-  
-  .alert-danger {
-    background-color: #f8d7da;
-    color: #721c24;
+
+  h2 {
+    font-size: 1.4rem;
   }
-  
-  @media (max-width: 576px) {
-    .container {
-      padding: 20px;
-    }
+
+  button.btn {
+    padding: 10px;
+    font-size: 0.95rem;
   }
-  
+}

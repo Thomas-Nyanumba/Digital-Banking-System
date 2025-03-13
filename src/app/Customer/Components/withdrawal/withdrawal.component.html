@@ -2,8 +2,8 @@
   <h2 class="mb-4">Withdraw Funds</h2>
 
   <!-- Success Message -->
-  <div class="alert alert-success" *ngIf="successMessage">
-    {{ successMessage }}
+  <div *ngIf="message" class="alert alert-success">
+    {{ message }}
   </div>
 
   <!-- Error Message -->

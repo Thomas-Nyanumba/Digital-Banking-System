@@ -1,8 +1,18 @@
 .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000; /* make sure it stays on top of other elements */
-    background-color: #fff; /* optional: give it a background */
-  }
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1100;
+  padding: 0 15px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toggle-sidebar {
+  cursor: pointer;
+  font-size: 24px;
+}
