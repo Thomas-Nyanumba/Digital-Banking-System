@@ -75,8 +75,11 @@ export class TransferFundsComponent implements OnInit {
       fromAccountId: fromAccount.id,
       toAccountId: toAccount.id,
       amount: amount,
-      description: formValues.description || 'Fund Transfer'
+      description: formValues.description || 'Fund Transfer',
+      date: new Date().toISOString(),
+      type: 'Transfer',
     };
+    
   
     this.accountService.createTransaction(transferPayload).subscribe({
       next: () => {

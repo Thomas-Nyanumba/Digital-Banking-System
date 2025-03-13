@@ -20,15 +20,15 @@
       "id": "1",
       "UserId": 1,
       "accountNumber": "ACC001",
-      "accountType": "Savings",
-      "balance": 4592
+      "accountType": "Main Account",
+      "balance": 4762
     },
     {
       "id": "2",
       "UserId": 1,
       "accountNumber": "ACC002",
-      "accountType": "Checking",
-      "balance": 3000
+      "accountType": "Savings",
+      "balance": 3004
     },
     {
       "id": "3",
@@ -283,6 +283,73 @@
       "toAccountId": "2",
       "amount": 9,
       "description": "Fund Transfer"
+    },
+    {
+      "id": "f63e",
+      "fromAccountId": "1",
+      "toAccountId": "2",
+      "amount": 1,
+      "description": "Fund Transfer"
+    },
+    {
+      "id": "77b8",
+      "fromAccountId": "2",
+      "toAccountId": "1",
+      "amount": 1,
+      "description": "Gift",
+      "date": "2025-03-13T08:43:28.441Z",
+      "type": "Transfer"
+    },
+    {
+      "id": "9db7",
+      "fromAccountId": "1",
+      "toAccountId": "2",
+      "amount": 1,
+      "description": "Gift",
+      "date": "2025-03-13T08:45:30.514Z",
+      "type": ""
+    },
+    {
+      "id": "b84b",
+      "fromAccountId": "2",
+      "toAccountId": "1",
+      "amount": 1,
+      "description": "Gift 1",
+      "date": "2025-03-13T08:48:40.672Z",
+      "type": ""
+    },
+    {
+      "id": "0577",
+      "fromAccountId": "1",
+      "toAccountId": "2",
+      "amount": 1,
+      "description": "Gift",
+      "date": "2025-03-13T08:52:33.296Z",
+      "type": "Transfer"
+    },
+    {
+      "id": "cf65",
+      "accountId": "2",
+      "amount": 3,
+      "description": "Deposit",
+      "date": "2025-03-13T09:01:59.082Z",
+      "type": "Deposit"
+    },
+    {
+      "id": "a832",
+      "accountId": "1",
+      "amount": 10,
+      "type": "Deposit",
+      "description": "Deposit",
+      "date": "2025-03-13T09:10:48.938Z"
+    },
+    {
+      "id": "3312",
+      "accountId": "1",
+      "amount": 1,
+      "type": "Withdrawal",
+      "description": "Withdrawal",
+      "date": "2025-03-13T09:16:16.584Z"
     }
   ]
 }

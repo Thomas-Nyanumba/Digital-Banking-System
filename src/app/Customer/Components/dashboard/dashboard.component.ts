@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
     { goal: 'Vacation Fund', icon: '🌴', progress: 60, target: 100000 },
     { goal: 'Emergency Fund', icon: '🚑', progress: 80, target: 50000 }
   ];
+loggedInUserId: number | undefined;
 
   constructor() { }
 

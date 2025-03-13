@@ -1,10 +1,10 @@
+  // transaction.model.ts
 export interface Transaction {
-    id?: number; // optional if JSON Server generates it
-    accountId: number;
-    date: string;
-    description: string;
-    type: 'debit' | 'credit';
-    amount: number;
-    balance: number;
-  }
-  
+type: any;
+  id: number;
+  accountId: number;
+  date: string;
+  description: string;
+  amount: number;
+  transactionType: string; // 'Credit' or 'Debit'
+}

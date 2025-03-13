@@ -12,9 +12,9 @@ import { Account } from '../../Models/account.model';
 export class DepositsComponent implements OnInit {
 
   depositForm!: FormGroup;
-  loggedInCustomerId!: number; // ✅ Logged-in user ID (customerId)
-  userAccounts: Account[] = []; // ✅ All accounts linked to the user
-  selectedAccount!: Account; // ✅ Account selected for deposit
+  loggedInCustomerId!: number; // Logged-in user ID (customerId)
+  userAccounts: Account[] = []; // All accounts linked to the user
+  selectedAccount!: Account; // Account selected for deposit
 
   successMessage = '';
   errorMessage = '';
@@ -28,25 +28,25 @@ export class DepositsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // ✅ Get the logged-in customer ID from AuthService
+    // Get the logged-in customer ID from AuthService
     const customerId = this.authService.getLoggedInCustomerId();
   
     if (!customerId) {
       this.errorMessage = 'User not logged in or no customer ID found.';
       console.error('No customerId found in authService!');
-      return; // ✅ Exit early if no ID found
+      return; // Exit early if no ID found
     }
   
     this.loggedInCustomerId = customerId;
   
-    // ✅ Initialize deposit form
+    // Initialize deposit form
     this.depositForm = this.fb.group({
       accountId: ['', Validators.required],
       amount: ['', [Validators.required, Validators.min(1)]],
       description: ['']
     });
   
-    // ✅ Fetch all accounts for this logged-in customer
+    // Fetch all accounts for this logged-in customer
     this.loadUserAccounts();
   }
   
@@ -60,7 +60,7 @@ export class DepositsComponent implements OnInit {
       return;
     }
   
-    // ✅ Use query param to filter by userId
+    // Use query param to filter by userId
     this.accountService.getAccountsByUserId(this.loggedInCustomerId).subscribe({
       next: (accounts: Account[]) => {
         this.userAccounts = accounts;
@@ -96,12 +96,11 @@ export class DepositsComponent implements OnInit {
   
     const accountId = this.depositForm.value.accountId;
     const depositAmount = this.depositForm.value.amount;
+    const description = this.depositForm.value.description || 'Deposit';
   
     console.log('Starting deposit process:', { accountId, depositAmount });
   
-    // Find the account in userAccounts
     const selectedAccount = this.userAccounts.find(acc => acc.id === accountId);
-    console.log("Selected account:", selectedAccount);
   
     if (!selectedAccount) {
       this.errorMessage = 'Selected account not found.';
@@ -114,19 +113,40 @@ export class DepositsComponent implements OnInit {
   
     this.accountService.depositToAccount(accountId, newBalance).subscribe({
       next: (updatedAccount: Account) => {
-        this.isSubmitting = false;
-        this.message = 'Deposit successful!';
-        this.errorMessage = '';
-  
-        // Update local account balance
+        // Update local balance
         selectedAccount.balance = updatedAccount.balance;
   
-        console.log(
-          `[${new Date().toISOString()}] Deposit successful! Account ID: ${accountId}, Amount Deposited: ${depositAmount}, New Balance: ${updatedAccount.balance}`
-        );
+        // Create a deposit transaction
+        const transaction = {
+          accountId: accountId,
+          amount: depositAmount,
+          type: 'Deposit',
+          description: description,
+          date: new Date().toISOString()
+        };
   
-        // Reset form
-        this.depositForm.reset();
+        this.accountService.createTransaction(transaction).subscribe({
+          next: () => {
+            this.isSubmitting = false;
+            this.message = 'Deposit successful!';
+            this.errorMessage = '';
+  
+            // Notify listeners about the transaction
+            this.accountService.notifyTransactionChange();
+  
+            console.log(
+              `[${new Date().toISOString()}] Deposit successful! Account ID: ${accountId}, Amount Deposited: ${depositAmount}, New Balance: ${updatedAccount.balance}`
+            );
+  
+            // Reset the form
+            this.depositForm.reset();
+          },
+          error: (err) => {
+            console.error('Transaction logging failed:', err);
+            this.isSubmitting = false;
+            this.errorMessage = 'Deposit completed, but failed to log transaction.';
+          }
+        });
       },
       error: (err: any) => {
         console.error('Deposit failed:', err);

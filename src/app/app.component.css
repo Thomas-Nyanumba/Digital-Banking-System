@@ -1,0 +1,8 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* make sure it stays on top of other elements */
+    background-color: #fff; /* optional: give it a background */
+  }

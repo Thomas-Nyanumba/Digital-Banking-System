@@ -86,39 +86,71 @@ export class WithdrawalsComponent implements OnInit {
       console.log('Form is invalid');
       return;
     }
-
+  
     this.isSubmitting = true;
-
+  
     const accountId = this.withdrawalForm.value.accountId;
     const withdrawalAmount = this.withdrawalForm.value.amount;
-
+    const description = this.withdrawalForm.value.description || 'Withdrawal';
+  
     const selectedAccount = this.userAccounts.find(acc => acc.id === accountId);
-
+  
     if (!selectedAccount) {
       this.errorMessage = 'Selected account not found.';
       this.isSubmitting = false;
       return;
     }
-
+  
     if (withdrawalAmount > selectedAccount.balance) {
       this.errorMessage = 'Withdrawal amount exceeds account balance.';
       this.isSubmitting = false;
       return;
     }
-
+  
     const newBalance = selectedAccount.balance - withdrawalAmount;
-
+  
+    // Start withdrawal process
+    console.log('Starting withdrawal process:', { accountId, withdrawalAmount });
+  
     this.accountService.withdrawFromAccount(accountId, newBalance).subscribe({
       next: (updatedAccount: Account) => {
-        this.isSubmitting = false;
-        this.message = 'Withdrawal successful!';
-        this.errorMessage = '';
-
         // Update local account balance
         selectedAccount.balance = updatedAccount.balance;
-
-        // Reset form
-        this.withdrawalForm.reset();
+  
+        // ptionally notify account change if you have a notifier for that
+        // this.accountService.notifyAccountChange(); // Optional if you already have one
+  
+        //  Create withdrawal transaction
+        const transaction = {
+          accountId: accountId,
+          amount: withdrawalAmount,
+          type: 'Withdrawal',
+          description: description,
+          date: new Date().toISOString()
+        };
+  
+        this.accountService.createTransaction(transaction).subscribe({
+          next: () => {
+            this.isSubmitting = false;
+            this.message = 'Withdrawal successful!';
+            this.errorMessage = '';
+  
+            // Notify listeners about the transaction so statements reload!
+            this.accountService.notifyTransactionChange();
+  
+            console.log(
+              `[${new Date().toISOString()}] Withdrawal successful! Account ID: ${accountId}, Amount Withdrawn: ${withdrawalAmount}, New Balance: ${updatedAccount.balance}`
+            );
+  
+            // Reset the form after everything succeeds
+            this.withdrawalForm.reset();
+          },
+          error: (err) => {
+            console.error('Transaction logging failed:', err);
+            this.isSubmitting = false;
+            this.errorMessage = 'Withdrawal completed, but failed to log transaction.';
+          }
+        });
       },
       error: (err: any) => {
         console.error('Withdrawal failed:', err);
@@ -127,4 +159,4 @@ export class WithdrawalsComponent implements OnInit {
       }
     });
   }
-}
+}  
